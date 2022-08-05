@@ -19,7 +19,7 @@ const ProjectType = new GraphQLObjectType({
       type: ClientType,
       resolve(parent, args) {
         // find the client id which equals the parents (project) client id. - If you look in sampla data, each project has a clientid which refers to the id of the owner of the project.
-        return clients.find(client => client.id === parent.clientId)
+        return clients.findById(parent.clientId)
       }
     }
   }) 
@@ -44,7 +44,8 @@ const RootQuery = new GraphQLObjectType({
     projects: {
       type: new GraphQLList(ProjectType),
       resolve(parent, args) {
-        return projects;
+        // find from Project mongoose schema
+        return Project.find();
       }
     },
     // query to get project by id
@@ -53,14 +54,15 @@ const RootQuery = new GraphQLObjectType({
       args: {id: {type: GraphQLID}},
       resolve(parent, args) {
         // here we would have mongoose function to get a single client
-        return projects.find((project) => project.id === args.id)
+        return Project.findById(args.id)
       }
     },
     // query to get all clients
     clients: {
       type: new GraphQLList(ClientType),
       resolve(parent, args) {
-        return clients;
+        // find from Client mongoose schema
+        return Client.find();
       }
     },
     // query to get client by id
@@ -69,7 +71,7 @@ const RootQuery = new GraphQLObjectType({
       args: {id: {type: GraphQLID}},
       resolve(parent, args) {
         // here we would have mongoose function to get a single client
-        return clients.find((client) => client.id === args.id)
+        return Client.findById(args.id)
       }
     }
   }
