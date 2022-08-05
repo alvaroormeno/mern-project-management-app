@@ -11,7 +11,14 @@ const ProjectType = new GraphQLObjectType({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
     description: {type: GraphQLString},
-    status: {type: GraphQLString}
+    status: {type: GraphQLString},
+    client: {
+      type: ClientType,
+      resolve(parent, args) {
+        // find the client id which equals the parents (project) client id. - If you look in sampla data, each project has a clientid which refers to the id of the owner of the project.
+        return clients.find(client => client.id === parent.clientId)
+      }
+    }
   }) 
 })
 
