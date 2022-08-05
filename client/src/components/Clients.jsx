@@ -1,16 +1,10 @@
 import React from 'react'
 import {gql, useQuery} from '@apollo/client'
 import ClientRow from './ClientRow.jsx'
+//import queries from clientqueries.js
+import { GET_CLIENTS } from '../queries/clientQueries.js'
 
-const GET_CLIENTS = gql`
-  query getClients {
-    clients{
-      name
-      email
-      phone
-    }
-  }
-`
+
 
 const Clients = () => {
 
