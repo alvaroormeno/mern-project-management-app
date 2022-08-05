@@ -82,6 +82,7 @@ const RootQuery = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
+    // Add one client
     addClient: {
       type: ClientType,
       // args are fields we want to add
@@ -101,6 +102,17 @@ const mutation = new GraphQLObjectType({
         // return the client we just created and save it to the database
         return client.save()
 
+      },
+    },
+    // Delete one client
+    deleteClient: {
+      type: ProjectType,
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args) {
+        // Use mongoose methos of return by id and remove
+        return Client.findOneAndRemove(args.id)
       }
     }
   },
