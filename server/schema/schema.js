@@ -2,6 +2,9 @@
 const {projects, clients} = require('../sampleData.js')
 // destructure graphql to bring specific graphql functions/properties
 const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList} = require('graphql')
+// import mongoose models
+const Project = require('../models/Project');
+const Client = require('../models/Client');
 
 
 // Project Type
