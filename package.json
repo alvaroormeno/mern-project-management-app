@@ -1,4 +1,23 @@
 {
+  "homepage": "https://github.com/alvaroormeno/mern-project-management-app#readme",
+  "description": "",
+  "name": "mern-project-management-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvaroormeno/mern-project-management-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alvaroormeno/mern-project-management-app/issues"
+  },
   "dependencies": {
     "colors": "^1.4.0",
     "cors": "^2.8.5",
@@ -10,5 +29,5 @@
   "devDependencies": {
     "dotenv": "^16.0.1",
     "nodemon": "^2.0.19"
-  }
+  },
 }
