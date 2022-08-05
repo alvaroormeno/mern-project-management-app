@@ -155,6 +155,38 @@ const mutation = new GraphQLObjectType({
       resolve(parent, args) {
         return Project.findByIdAndRemove(args.id)
       }
+    },
+    // Update on project
+    updateProject: {
+      type: ProjectType,
+      args: {
+        id: {type: GraphQLNonNull(GraphQLID)},
+        // not using GraphQLNonNull because we dont want to specify a name or description when updating. We want to be able to only update the name or just the status.  
+        name: { type: GraphQLString},
+        description: {type: GraphQLString},
+        status:  {
+          type: new GraphQLEnumType({
+            name: 'ProjectStatusUpdate',
+            values: { 
+              'new': { value: 'Not Started'},
+              'progress': { value: 'In Progress'},
+              'completed': { value: 'Completed'},
+            }
+          }), 
+        },
+      },
+      resolve(parent, args) {
+        return Project.findByIdAndUpdate(args.id, {
+            $set: {
+              name: args.name,
+              description: args.description,
+              status: args.status,
+            },
+          },
+          // if the project is not there it will create a new project
+          {new: true}
+        )
+      }
     }
   },
 })
