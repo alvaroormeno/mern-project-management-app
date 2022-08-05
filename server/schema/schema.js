@@ -1,7 +1,7 @@
 // destructure and bring projects and clients to work with
-const {projects, clients} = require('../sampleData.js')
+// const {projects, clients} = require('../sampleData.js')
 // destructure graphql to bring specific graphql functions/properties
-const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList} = require('graphql')
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList, GraphQLNonNull} = require('graphql')
 // import mongoose models
 const Project = require('../models/Project');
 const Client = require('../models/Client');
@@ -36,7 +36,7 @@ const ClientType = new GraphQLObjectType({
   }) 
 })
 
-//Root Query - 
+//Root Query - to fetch data
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
@@ -77,6 +77,36 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+
+// Mutations - queries to add or delete data
+const mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addClient: {
+      type: ClientType,
+      // args are fields we want to add
+      args: {
+        // we dont want someone to add a new client without a name so we use GraphQLNonNull to wrap around the type of GraphQLString
+        name: { type: GraphQLNonNull(GraphQLString) },
+        email: { type: GraphQLNonNull(GraphQLString) },
+        phone: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parent, args) {
+        // creating a new client using the mongoose Client model and passing properties/values (name, email, phone). The args will come from the graphql query
+        const client = new Client({
+          name: args.name,
+          email: args.email,
+          phone: args.phone,
+        });
+        // return the client we just created and save it to the database
+        return client.save()
+
+      }
+    }
+  },
+})
+
 module.exports = new GraphQLSchema({
   query: RootQuery,
+  mutation
 })
