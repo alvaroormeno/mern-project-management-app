@@ -19,7 +19,7 @@ const ProjectType = new GraphQLObjectType({
       type: ClientType,
       resolve(parent, args) {
         // find the client id which equals the parents (project) client id. - If you look in sampla data, each project has a clientid which refers to the id of the owner of the project.
-        return clients.findById(parent.clientId)
+        return Client.findById(parent.clientId)
       }
     }
   }) 
@@ -127,7 +127,7 @@ const mutation = new GraphQLObjectType({
             name: 'ProjectStatus',
             values: { 
               'new': { value: 'Not Started'},
-              'progress': { value: 'Progress'},
+              'progress': { value: 'In Progress'},
               'completed': { value: 'Completed'},
             }
             // giving each new created project the default value of Not Started
