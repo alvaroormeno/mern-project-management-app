@@ -1,7 +1,7 @@
 // destructure and bring projects and clients to work with
 // const {projects, clients} = require('../sampleData.js')
 // destructure graphql to bring specific graphql functions/properties
-const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList, GraphQLNonNull} = require('graphql')
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList, GraphQLNonNull, GraphQLEnumType} = require('graphql')
 // import mongoose models
 const Project = require('../models/Project');
 const Client = require('../models/Client');
@@ -113,6 +113,37 @@ const mutation = new GraphQLObjectType({
       resolve(parent, args) {
         // Use mongoose methos of return by id and remove
         return Client.findOneAndRemove(args.id)
+      }
+    },
+    // Add one project
+    addProject: {
+      type: ProjectType,
+      args: {
+        name: { type: GraphQLNonNull(GraphQLString) },
+        description: { type: GraphQLNonNull(GraphQLString) },
+        // for status we are using enum which specifies only an x amount of values can be for status.
+        status:  {
+          type: new GraphQLEnumType({
+            name: 'ProjectStatus',
+            values: { 
+              'new': { value: 'Not Started'},
+              'progress': { value: 'Progress'},
+              'completed': { value: 'Completed'},
+            }
+            // giving each new created project the default value of Not Started
+          }), defaultValue: 'Not Started'
+        },
+        clientId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args) {
+        // create a new Project using the mongoose Project model and passing values(name, desc...)
+        const project = new Project({
+          name: args.name,
+          description: args.description,
+          status: args.status,
+          clientId: args.clientId 
+        });
+        return project.save()
       }
     }
   },
