@@ -6,7 +6,7 @@ const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList}
 
 // Project Type
 const ProjectType = new GraphQLObjectType({
-  name: 'Client',
+  name: 'Project',
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
@@ -30,6 +30,22 @@ const ClientType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
+    // query to get all projects
+    projects: {
+      type: new GraphQLList(ProjectType),
+      resolve(parent, args) {
+        return projects;
+      }
+    },
+    // query to get project by id
+    project: {
+      type: ProjectType,
+      args: {id: {type: GraphQLID}},
+      resolve(parent, args) {
+        // here we would have mongoose function to get a single client
+        return projects.find((project) => project.id === args.id)
+      }
+    },
     // query to get all clients
     clients: {
       type: new GraphQLList(ClientType),
