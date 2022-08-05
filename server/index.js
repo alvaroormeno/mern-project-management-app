@@ -1,5 +1,6 @@
 const express = require('express')
 const colors = require('colors')
+const cors = require('cors')
 require('dotenv').config();
 const {graphqlHTTP} = require('express-graphql')
 const schema = require('./schema/schema')
@@ -11,6 +12,9 @@ const app = express();
 
 // Connect to database via ConnectDB() function imported from db.js file
 connectDB();
+
+//middle wear
+app.use(cors())
 
 app.use('/graphql', graphqlHTTP({
     // Require schema
