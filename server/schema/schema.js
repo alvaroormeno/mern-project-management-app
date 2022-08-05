@@ -36,7 +36,7 @@ const ClientType = new GraphQLObjectType({
   }) 
 })
 
-//Root Query - to fetch data
+//Root Query - 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
