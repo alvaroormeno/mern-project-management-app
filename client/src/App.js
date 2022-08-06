@@ -1,9 +1,7 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import Header from "./components/Header";
 import {ApolloProvider, ApolloClient, InMemoryCache} from '@apollo/client'
-import Clients from "./components/Clients";
-import AddClientModal from "./components/AddClientModal";
-import Projects from "./components/Projects";
+import Home from './pages/Home';
 
 // created so cache data maybe be lost warning stops appearing. Merging old with new cache
 const cache = new InMemoryCache({
@@ -38,9 +36,9 @@ function App() {
       <BrowserRouter>
         <Header/>
         <div className="container">
-          <AddClientModal/>
-          <Projects/>
-          <Clients></Clients>
+          <Routes>
+            <Route path='/' element={<Home/>} />
+          </Routes>
         </div>
       </BrowserRouter>
     </ApolloProvider>
