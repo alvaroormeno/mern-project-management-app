@@ -111,6 +111,12 @@ const mutation = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
+        //when delete client, also delete projects from that client
+        Project.find({clientId: args.id}).then((projects) => {
+          projects.forEach(project => {
+            project.remove()
+          })
+        })
         // Use mongoose methos of return by id and remove
         return Client.findByIdAndRemove(args.id)
       },
