@@ -106,14 +106,14 @@ const mutation = new GraphQLObjectType({
     },
     // Delete one client
     deleteClient: {
-      type: ProjectType,
+      type: ClientType,
       args: {
         id: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
         // Use mongoose methos of return by id and remove
-        return Client.findOneAndRemove(args.id)
-      }
+        return Client.findByIdAndRemove(args.id)
+      },
     },
     // Add one project
     addProject: {

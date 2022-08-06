@@ -10,6 +10,7 @@ import { GET_CLIENTS } from '../queries/clientQueries.js'
 const Clients = () => {
 
   const { loading, error, data } = useQuery(GET_CLIENTS)
+  console.log(data)
 
   if(loading) return <Spinner/>
   if(error) return <p>Something Went Wrong</p>
@@ -28,7 +29,7 @@ const Clients = () => {
           </thead>
           <tbody>
             {/* map for each client from data to render a clientrow component wich we are passing the key and the client data. */}
-            {data.clients.map(client => (
+            {data.clients.map((client) => (
               <ClientRow key={client.id} client={client}/>
             ))}
           </tbody>
