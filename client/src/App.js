@@ -2,6 +2,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import Header from "./components/Header";
 import {ApolloProvider, ApolloClient, InMemoryCache} from '@apollo/client'
 import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 
 // created so cache data maybe be lost warning stops appearing. Merging old with new cache
 const cache = new InMemoryCache({
@@ -38,6 +39,7 @@ function App() {
         <div className="container">
           <Routes>
             <Route path='/' element={<Home/>} />
+            <Route path='*' element={<NotFound/>} />
           </Routes>
         </div>
       </BrowserRouter>
