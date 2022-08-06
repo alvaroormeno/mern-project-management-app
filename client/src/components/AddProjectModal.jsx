@@ -9,40 +9,39 @@ import { GET_PROJECTS } from "../queries/projectQueries";
 const AddClientModal = () => {
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [description, setDescription] = useState("");
+  const [clientId, setClientId] = useState("");
+  const [status, setStatus] = useState("new");
 
-  // Use ADD_CLIENT mutation
-  const [addClient] = useMutation(ADD_CLIENT, {
-    variables: {name, email, phone},
-    //update cache to render newly added client on page
-    update(cache, {data: {addClient}}) {
-      // read the cache which query is GET_CLIENTS mutation and destructure to grab clients
-      const {clients} = cache.readQuery({ query: GET_CLIENTS});
+  // // Use ADD_CLIENT mutation
+  // const [addClient] = useMutation(ADD_CLIENT, {
+  //   variables: {name, email, phone},
+  //   //update cache to render newly added client on page
+  //   update(cache, {data: {addClient}}) {
+  //     // read the cache which query is GET_CLIENTS mutation and destructure to grab clients
+  //     const {clients} = cache.readQuery({ query: GET_CLIENTS});
 
-      cache.writeQuery({
-        query: GET_CLIENTS,
-        data: { clients: [...clients, addClient]},
-      })
-    }
-  })
+  //     cache.writeQuery({
+  //       query: GET_CLIENTS,
+  //       data: { clients: [...clients, addClient]},
+  //     })
+  //   }
+  // })
 
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     //validate that inputs have name email and phone by checking if states are empty
-    if(name === '' || email === '' || phone === '') {
+    if(name === '' || description === '' || status === '') {
       return alert('Please fill in all 3 fields to continue');
     }
     
-    //add new client by passing state values
-    addClient(name, email, phone)
 
     //clear states therefore clear inputs
     setName("");
-    setEmail("");
-    setPhone("");
+    setDescription("");
+    setStatus("new");
     
 
   }
@@ -51,27 +50,27 @@ const AddClientModal = () => {
 		<>
 			<button
 				type="button"
-				className="btn btn-secondary"
+				className="btn btn-primary"
 				data-bs-toggle="modal"
-				data-bs-target="#addClientModal"
+				data-bs-target="#addProjectModal"
 			>
 				<div className="d-flex align-items-center">
-					<FaUser className="icon" />
-					<div>Add Client</div>
+					<FaList className="icon" />
+					<div>New Project</div>
 				</div>
 			</button>
 
-			<div
+			<div 
 				className="modal fade"
-				id="addClientModal"
-				aria-labelledby="addClientModalLabel"
+				id="addProjectModal"
+				aria-labelledby="addProjectModalLabel"
 				aria-hidden="true"
 			>
 				<div className="modal-dialog">
 					<div className="modal-content">
 						<div className="modal-header">
-							<h5 className="modal-title" id="addClientModalLabel">
-								Add Client
+							<h5 className="modal-title" id="addProjectModalLabel">
+								New Project
 							</h5>
 							<button
 								type="button"
@@ -93,30 +92,28 @@ const AddClientModal = () => {
 										onChange={(e) => setName(e.target.value)}
 									/>
 								</div>
-                {/* EMAIL */}
+                {/* DESCRIPTION */}
 								<div className="mb-3">
-									<label className="form-label">Email</label>
-									<input
+									<label className="form-label">Description</label>
+									<textarea
 										type="email"
 										className="form-control"
-										id="email"
-										value={email}
-										onChange={(e) => setEmail(e.target.value)}
-									/>
+										id="description"
+										value={description}
+										onChange={(e) => setDescription(e.target.value)}
+									></textarea>
 								</div>
-                {/* PHONE */}
+                {/* STATUS */}
 								<div className="mb-3">
 									<label className="form-label">Phone</label>
-									<input
-										type="text"
-										className="form-control"
-										id="phone"
-										value={phone}
-										onChange={(e) => setPhone(e.target.value)}
-									/>
+									<select className="form-select"  id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+                    <option value="new">Not Started</option>
+                    <option value="progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
 								</div>
 
-                <button type="submit" className="btn btn-secondary" data-bs-dismiss="modal" >
+                <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" >
                   Submit
                 </button>
 							</form>
