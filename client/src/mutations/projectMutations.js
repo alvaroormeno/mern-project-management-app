@@ -27,4 +27,14 @@ const ADD_PROJECT = gql`
 	}
 `;
 
-export { ADD_PROJECT };
+// creating DeleteProject mutation which takes in an id and then ww call deleteProject query where we pass the id and then just return the id
+
+const DELETE_PROJECT = gql`
+  mutation DeleteProject($id: ID!) {
+    deleteProject(id: $id) {
+      id
+    }
+  }
+`
+
+export { ADD_PROJECT, DELETE_PROJECT };
